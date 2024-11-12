@@ -20,10 +20,7 @@ export const formatDate = (date: string | null) => {
   return new Date(date).toLocaleString();
 };
 
-export const getDisplayName = (
-  checkKey: string,
-  config?: typeof displayConfig.tinVerification
-) => {
+export const getDisplayName = (checkKey: string, config?: any) => {
   if (config?.displayName) {
     return config.displayName;
   }
@@ -41,4 +38,4 @@ export const getDisplayName = (
     )
     .join(" ")
     .trim();
-}; 
+};

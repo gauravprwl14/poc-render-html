@@ -1,8 +1,10 @@
-import { useState } from 'react';
-import { DisplayField } from '../types/DisplayTypes';
-import { DataRenderer } from './DataRenderer';
-import { TableRenderer } from './TableRenderer';
-import { SectionRenderer } from './SectionRenderer';
+// @ts-ignore
+
+import { useState } from "react";
+import { DisplayField } from "../types/DisplayTypes";
+import { DataRenderer } from "./DataRenderer";
+import { TableRenderer } from "./TableRenderer";
+import { SectionRenderer } from "./SectionRenderer";
 
 interface ArrayRendererProps {
   field: DisplayField;
@@ -18,32 +20,36 @@ export const ArrayRenderer = ({ field, data, level }: ArrayRendererProps) => {
   }
 
   // Use TableRenderer for top-level table components
-  if (field.component === 'Table' && level === 0) {
+  if (field.component === "Table" && level === 0) {
     return <TableRenderer field={field} data={data} level={level} />;
   }
 
   // Use SectionRenderer for nested structures
-  if (field.properties || field.nestedConfig?.type === 'object') {
+  if (field.properties || field.nestedConfig?.type === "object") {
     return <SectionRenderer field={field} data={data} level={level} />;
   }
 
   // For simple arrays (strings, URLs, etc)
-  const isSimpleArray = data.every(item => 
-    typeof item === 'string' || 
-    (typeof item === 'string' && (item.startsWith('http') || item.startsWith('/')))
+  const isSimpleArray = data.every(
+    (item) =>
+      typeof item === "string" ||
+      (typeof item === "string" &&
+        (item.startsWith("http") || item.startsWith("/")))
   );
 
   if (isSimpleArray) {
     const displayItems = data.slice(0, 5);
     const hasMore = data.length > 5;
-    const isUrlArray = data.some(item => 
-      typeof item === 'string' && (item.startsWith('http') || item.startsWith('/'))
+    const isUrlArray = data.some(
+      (item) =>
+        typeof item === "string" &&
+        (item.startsWith("http") || item.startsWith("/"))
     );
 
     return (
       <div>
         <div className="flex flex-wrap gap-2">
-          {displayItems.map((item, index) => (
+          {displayItems.map((item, index) =>
             isUrlArray ? (
               <a
                 key={index}
@@ -52,8 +58,18 @@ export const ArrayRenderer = ({ field, data, level }: ArrayRendererProps) => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700 hover:bg-blue-100"
               >
-                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg
+                  className="h-3 w-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
                 Link {index + 1}
               </a>
@@ -65,7 +81,7 @@ export const ArrayRenderer = ({ field, data, level }: ArrayRendererProps) => {
                 {String(item)}
               </span>
             )
-          ))}
+          )}
           {hasMore && (
             <button
               onClick={() => setShowModal(true)}
@@ -86,14 +102,24 @@ export const ArrayRenderer = ({ field, data, level }: ArrayRendererProps) => {
                   onClick={() => setShowModal(false)}
                   className="text-gray-400 hover:text-gray-500"
                 >
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
               <div className="p-4 overflow-y-auto">
                 <div className="flex flex-wrap gap-2">
-                  {data.map((item, index) => (
+                  {data.map((item, index) =>
                     isUrlArray ? (
                       <a
                         key={index}
@@ -102,8 +128,18 @@ export const ArrayRenderer = ({ field, data, level }: ArrayRendererProps) => {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700 hover:bg-blue-100"
                       >
-                        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        <svg
+                          className="h-3 w-3"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
                         </svg>
                         Link {index + 1}
                       </a>
@@ -115,7 +151,7 @@ export const ArrayRenderer = ({ field, data, level }: ArrayRendererProps) => {
                         {String(item)}
                       </span>
                     )
-                  ))}
+                  )}
                 </div>
               </div>
               <div className="p-4 border-t">
@@ -146,4 +182,4 @@ export const ArrayRenderer = ({ field, data, level }: ArrayRendererProps) => {
       ))}
     </div>
   );
-}; 
+};

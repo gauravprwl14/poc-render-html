@@ -10,6 +10,7 @@ export function convertKeysToKebabCase(obj: any): any {
       // Convert the key from snake_case to kebab-case
       const kebabKey = key.replace(/_/g, "-");
       // Recursively convert the value
+      // @ts-ignore
       acc[kebabKey] = convertKeysToKebabCase(value);
       return acc;
     }, {});

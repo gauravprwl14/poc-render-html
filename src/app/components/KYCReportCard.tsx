@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 
 import { useState } from "react";
@@ -9,6 +11,7 @@ import type {
   Verification,
 } from "./types/KYCReportTypes";
 import { displayConfig } from "../lib/KYCReports/types/displayConfig";
+import ts from "typescript";
 
 export default function KYCReportCard({
   kycReport,

@@ -1,3 +1,5 @@
+import { displayConfig } from "../../lib/KYCReports/types/verifications/tinVerification";
+
 export interface VerificationData {
   type: string;
   id: string;
@@ -53,4 +55,4 @@ export interface VerificationSectionProps {
   key: string;
   verifications: Verification[];
   config: typeof displayConfig.tinVerification;
-} 
+}

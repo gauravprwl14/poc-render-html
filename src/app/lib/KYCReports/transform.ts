@@ -5,18 +5,16 @@ const ReportKeyConfig = [
   {
     reportName: "Identity Verification",
     enable: true,
-    flows: [
+    checks: [
       {
         vendorName: "PERSONA",
-        // TODO Rename to checkName
-        flowName: "selfieVerification",
-        // TODO Rename to checkKey
-        inputKeyName: "selfie_verification",
+        checkName: "selfieVerification",
+        checkKey: "selfie_verification",
         enabled: true,
       },
       {
-        flowName: "governmentId",
-        inputKeyName: "government_id_verification",
+        checkName: "governmentId",
+        checkKey: "government_id_verification",
       },
     ],
     messages: {
@@ -27,18 +25,18 @@ const ReportKeyConfig = [
   },
   {
     reportName: "eligibilityCheck",
-    flows: [
+    checks: [
       {
-        flowName: "addressProof",
-        inputKeyName: "address_lookup_report",
+        checkName: "addressProof",
+        checkKey: "address_lookup_report",
       },
       {
-        flowName: "citizenship",
-        inputKeyName: "w8ben",
+        checkName: "citizenship",
+        checkKey: "w8ben",
       },
       {
-        flowName: "Proof Of Employment",
-        inputKeyName: "proofOfEmployment",
+        checkName: "Proof Of Employment",
+        checkKey: "proofOfEmployment",
       },
     ],
     messages: {
@@ -49,34 +47,34 @@ const ReportKeyConfig = [
   },
   {
     reportName: "KYC Check",
-    flows: [
+    checks: [
       {
-        flowName: "tinVerification",
-        inputKeyName: "tin_verification",
+        checkName: "tinVerification",
+        checkKey: "tin_verification",
       },
       {
-        flowName: "databaseVerification",
-        inputKeyName: "database_verification",
+        checkName: "databaseVerification",
+        checkKey: "database_verification",
       },
       {
-        flowName: "standardDatabaseVerification",
-        inputKeyName: "database_standard_verification",
+        checkName: "standardDatabaseVerification",
+        checkKey: "database_standard_verification",
       },
       {
-        flowName: "databasePhoneCarrierVerification",
-        inputKeyName: "phone_carrier_verification",
+        checkName: "databasePhoneCarrierVerification",
+        checkKey: "phone_carrier_verification",
       },
       {
-        flowName: "email",
-        inputKeyName: "email_risk_report",
+        checkName: "email",
+        checkKey: "email_risk_report",
       },
       {
-        flowName: "phoneRiskReport",
-        inputKeyName: "phone_risk_report",
+        checkName: "phoneRiskReport",
+        checkKey: "phone_risk_report",
       },
       {
-        flowName: "addressProof",
-        inputKeyName: "address_lookup_report",
+        checkName: "addressProof",
+        checkKey: "address_lookup_report",
       },
     ],
     messages: {
@@ -87,22 +85,22 @@ const ReportKeyConfig = [
   },
   // {
   //   reportName: "riskCheck",
-  //   flows: [
+  //   checks: [
   //     {
-  //       flowName: "politicallyExposedPersonReport",
-  //       inputKeyName: "politically_exposed_person_report",
+  //       checkName: "politicallyExposedPersonReport",
+  //       checkKey: "politically_exposed_person_report",
   //     },
   //     {
-  //       flowName: "watchList",
-  //       inputKeyName: "watchlist_report",
+  //       checkName: "watchList",
+  //       checkKey: "watchlist_report",
   //     },
   //     {
-  //       flowName: "adverseMediaReport",
-  //       inputKeyName: "adverse_media_report",
+  //       checkName: "adverseMediaReport",
+  //       checkKey: "adverse_media_report",
   //     },
   //     {
-  //       flowName: "socialMediaReport",
-  //       inputKeyName: "social_media_report",
+  //       checkName: "socialMediaReport",
+  //       checkKey: "social_media_report",
   //     },
   //   ],
   //   messages: {
@@ -113,18 +111,18 @@ const ReportKeyConfig = [
   // },
   // {
   //   reportName: "fraudPrevention",
-  //   flows: [
+  //   checks: [
   //     {
-  //       flowName: "email",
-  //       inputKeyName: "email_risk_report",
+  //       checkName: "email",
+  //       checkKey: "email_risk_report",
   //     },
   //     {
-  //       flowName: "phoneRiskReport",
-  //       inputKeyName: "phone_risk_report",
+  //       checkName: "phoneRiskReport",
+  //       checkKey: "phone_risk_report",
   //     },
   //     {
-  //       flowName: "addressProof",
-  //       inputKeyName: "address_lookup_report",
+  //       checkName: "addressProof",
+  //       checkKey: "address_lookup_report",
   //     },
   //   ],
   //   messages: {
@@ -135,10 +133,10 @@ const ReportKeyConfig = [
   // },
   {
     reportName: "creditCheck",
-    flows: [
+    checks: [
       {
-        flowName: "creditScore",
-        inputKeyName: "credit_check",
+        checkName: "creditScore",
+        checkKey: "credit_check",
       },
     ],
     messages: {
@@ -149,10 +147,10 @@ const ReportKeyConfig = [
   },
   {
     reportName: "depositCheck",
-    flows: [
+    checks: [
       {
-        flowName: "financialDocumentVerification",
-        inputKeyName: "FinancialDocumentVerification",
+        checkName: "financialDocumentVerification",
+        checkKey: "FinancialDocumentVerification",
       },
     ],
     messages: {
@@ -163,22 +161,22 @@ const ReportKeyConfig = [
   },
   {
     reportName: "OFAC/AML check",
-    flows: [
+    checks: [
       {
-        flowName: "pep",
-        inputKeyName: "politically_exposed_person_report",
+        checkName: "pep",
+        checkKey: "politically_exposed_person_report",
       },
       {
-        flowName: "watchList",
-        inputKeyName: "watchlist_report",
+        checkName: "watchList",
+        checkKey: "watchlist_report",
       },
       {
-        flowName: "adverseMediaReport",
-        inputKeyName: "adverse_media_report",
+        checkName: "adverseMediaReport",
+        checkKey: "adverse_media_report",
       },
       {
-        flowName: "socialMediaReport",
-        inputKeyName: "social_media_report",
+        checkName: "socialMediaReport",
+        checkKey: "social_media_report",
       },
     ],
     messages: {
@@ -271,7 +269,7 @@ function processCheck(check: InputCheck): OutputCheck {
 
 function getCheckStatus(check: InputCheck[]) {
   const hasFailedCheck = check.some(
-    (c) => c.status === "FAILED" || c.status === "failed"
+    (c) => c.status === "FAILED" || c?.status?.toLocaleLowerCase() === "failed"
   );
   if (hasFailedCheck) {
     return "FAILED";
@@ -299,10 +297,10 @@ function transformReport(report: InputReport) {
       messages: [reportKey.messages.PASSED],
     };
     let reportStatus: "PASSED" | "FAILED" | "PENDING" = "PASSED";
-    for (const flow of reportKey.flows) {
-      const flowName = flow.flowName;
-      const inputKeyName = flow.inputKeyName;
-      const checks = report.checks[inputKeyName];
+    for (const flow of reportKey.checks) {
+      const checkName = flow.checkName;
+      const checkKey = flow.checkKey;
+      const checks = report.checks[checkKey];
       if (!checks) {
         continue;
       }
@@ -310,18 +308,20 @@ function transformReport(report: InputReport) {
       const transformedChecks = checks.map(processCheck);
       if (
         reportStatus === "PASSED" &&
-        (checkStatus === "FAILED" || checkStatus === "failed")
+        (checkStatus === "FAILED" ||
+          checkStatus.toLocaleLowerCase() === "failed")
       ) {
         reportStatus = checkStatus;
       }
-      checkReport.checks[flowName] = transformedChecks;
+      checkReport.checks[checkName] = transformedChecks;
     }
     checkReport.status = reportStatus;
     checkReport.messages = [reportKey.messages[reportStatus]];
     reportData.checks[reportKey.reportName] = checkReport;
     if (
       overallStatus === "PASSED" &&
-      (reportStatus === "FAILED" || reportStatus === "failed")
+      (reportStatus === "FAILED" ||
+        reportStatus.toLocaleLowerCase() === "failed")
     ) {
       overallStatus = reportStatus;
     }
