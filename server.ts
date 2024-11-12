@@ -1,19 +1,11 @@
 import { Request, Response } from "express";
-
-require("@babel/register")({
-  extensions: [".js", ".jsx", ".ts", ".tsx"],
-  presets: [
-    "@babel/preset-env",
-    ["@babel/preset-react", { runtime: "automatic" }],
-    "@babel/preset-typescript",
-  ],
-});
-const React = require("react");
-const ReactDOMServer = require("react-dom/server");
-const { default: PageRender } = require("./src/App.tsx");
-const fs = require("fs");
-const path = require("path");
-const express = require("express");
+import "@babel/register";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import PageRender from "./src/App";
+import fs from "fs";
+import path from "path";
+import express from "express";
 
 const app = express();
 const port = 3010;
@@ -59,7 +51,8 @@ app.post("/data", (req: Request, res: Response) => {
   // Find the JS files
   const jsDirectory = path.resolve(__dirname, "build", "static", "js");
   const mainJsFile = findHashedFile(jsDirectory, "main", ".js");
-  const runtimeJsFile = findHashedFile(jsDirectory, "runtime", ".js");
+  // const runtimeJsFile = findHashedFile(jsDirectory, "runtime", ".js");
+  // <script src="/static/js/${runtimeJsFile}"></script>
 
   // Inject CSS, JS, and rendered app HTML into the template
   let renderedHtml = htmlTemplate
@@ -67,10 +60,10 @@ app.post("/data", (req: Request, res: Response) => {
     .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 
   // Add JS files before closing body tag
-  if (mainJsFile && runtimeJsFile) {
+  if (mainJsFile) {
     const jsScripts = `
-      <script src="/static/js/${runtimeJsFile}"></script>
-      <script src="/static/js/${mainJsFile}"></script>
+      <script src="../build/static/js/${mainJsFile}"></script>
+      
     `;
     renderedHtml = renderedHtml.replace("</body>", `${jsScripts}</body>`);
   }
