@@ -1,0 +1,63 @@
+{
+    "action": "SKIP",
+    "customers": [
+        {
+            "name": {
+                "first": "gaurav",
+                "middle": "",
+                "last": "",
+                "suffix": ""
+            },
+            "dateOfBirth": null,
+            "ssn": null,
+            "email": [
+                {
+                    "email": "gauravp@geekyants.com",
+                    "tyfoneExtension": {
+                        "isPrimary": true,
+                        "emailId": "0_pI0jlGLt5biotK0w_hGR"
+                    }
+                }
+            ],
+            "addresses": [
+                {
+                    "line1": "",
+                    "line2": "",
+                    "city": "",
+                    "state": "",
+                    "postalCode": "",
+                    "type": "HOME",
+                    "tyfoneExtension": {
+                        "isPrimary": true,
+                        "addressState": "CURRENT"
+                    }
+                },
+                {
+                    "line1": "",
+                    "line2": "",
+                    "city": "",
+                    "state": "",
+                    "postalCode": "",
+                    "type": "HOME",
+                    "tyfoneExtension": {
+                        "addressState": "PREVIOUS"
+                    }
+                },
+                {
+                    "line1": "",
+                    "line2": "",
+                    "city": "",
+                    "state": "",
+                    "postalCode": "",
+                    "type": "MAILING",
+                    "tyfoneExtension": {}
+                }
+            ],
+            "tyfoneExtension": {
+                "ownership": "PRIMARY",
+                "naoUserId": "pI0jlGLt5biotK0w_hGR",
+                "withHolding": false
+            }
+        }
+    ]
+}
