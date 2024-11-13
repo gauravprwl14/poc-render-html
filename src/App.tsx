@@ -4,14 +4,17 @@ import HTMLRender from "./app/htmlRender";
 interface AppProps {
   title?: string;
   content?: string;
+  data?: any;
 }
 
 const App: React.FC<AppProps> = (props) => {
+  console.log("props", { props });
+
   return (
     <div>
       <h1>{props.title}</h1>
       <p className="text-red-400">{props.content}</p>
-      <HTMLRender data={props} />
+      <HTMLRender data={props.data} />
     </div>
   );
 };
@@ -20,6 +23,6 @@ const App: React.FC<AppProps> = (props) => {
 export { App };
 
 // This is the server-side render function
-export default function PageRender(data: AppProps) {
-  return React.createElement(App, data);
+export default function PageRender(props: any) {
+  return React.createElement(App, props);
 }

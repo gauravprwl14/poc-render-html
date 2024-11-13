@@ -6,7 +6,7 @@ import PageRender from "./src/App";
 import fs from "fs";
 import path from "path";
 import express from "express";
-
+import { CurrentkYCResponseStructure } from "./src/app/lib/KYCReports/sampleInput/input_2";
 const app = express();
 const port = 3010;
 
@@ -29,8 +29,9 @@ const findHashedFile = (
 };
 
 app.post("/data", (req: Request, res: Response) => {
-  const data = req.body;
-  const appHtml = ReactDOMServer.renderToString(PageRender(data));
+  let data = req.body;
+  data = CurrentkYCResponseStructure;
+  const appHtml = ReactDOMServer.renderToStaticMarkup(PageRender({ data }));
 
   // Read the HTML template file
   const htmlTemplate = fs.readFileSync(
@@ -54,18 +55,42 @@ app.post("/data", (req: Request, res: Response) => {
   // const runtimeJsFile = findHashedFile(jsDirectory, "runtime", ".js");
   // <script src="/static/js/${runtimeJsFile}"></script>
 
+  // read the hashed JS file
+  let jsContent = "";
+  if (mainJsFile) {
+    const jsPath = path.resolve(jsDirectory, mainJsFile);
+    jsContent = fs.readFileSync(jsPath, "utf-8");
+  }
+
   // Inject CSS, JS, and rendered app HTML into the template
   let renderedHtml = htmlTemplate
+    // .replace("</head>", `<style>${cssContent}</style></head>`)
     .replace("</head>", `<style>${cssContent}</style></head>`)
     .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 
   // Add JS files before closing body tag
   if (mainJsFile) {
-    const jsScripts = `
-      <script src="../build/static/js/${mainJsFile}"></script>
-      
-    `;
-    renderedHtml = renderedHtml.replace("</body>", `${jsScripts}</body>`);
+    const hydrateData = `            <script>
+              window.__INITIAL_PROPS__ = ${JSON.stringify(data)};
+            </script>`;
+
+    const jsScripts = `<script>${jsContent}</script>`;
+
+    renderedHtml = renderedHtml.replace(
+      "</body>",
+      `${hydrateData} \n ${jsScripts}</body>`
+    );
+
+    // OUTPUT Directory
+    const outputDirectory = path.resolve(__dirname, "output");
+    if (!fs.existsSync(outputDirectory)) {
+      fs.mkdirSync(outputDirectory);
+    }
+    // Write the rendered HTML to a render.html if not exists then create one
+    fs.writeFileSync(
+      path.resolve(outputDirectory, "render.html"),
+      renderedHtml
+    );
   }
 
   // Send the rendered HTML to the client

@@ -343,7 +343,7 @@ export function generateKYCReport(data: any) {
   if (data) {
     console.log("Data is available", { data });
     // return transformReportData(data);
-    return transformReportData(CurrentkYCResponseStructure);
+    return transformReportData(data);
   }
   return transformReportData(CurrentkYCResponseStructure);
 }
