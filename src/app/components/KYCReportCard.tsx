@@ -11,7 +11,6 @@ import type {
   Verification,
 } from "./types/KYCReportTypes";
 import { displayConfig } from "../lib/KYCReports/types/displayConfig";
-import ts from "typescript";
 
 export default function KYCReportCard({
   kycReport,
@@ -35,12 +34,14 @@ export default function KYCReportCard({
   ) => {
     const isExpanded = expandedSections[verification.id];
     const attributes = verification.data.attributes as Record<string, unknown>;
+    const id = verification.data.id as string;
 
     const getDateDisplay = () => {
       if (!config.displayDate) return null;
 
       return (
         <div className="text-sm text-gray-500">
+          {id && <div>Id: {id}</div>}
           {attributes.completed_at && (
             <div>
               Completed: {formatDate(attributes.completed_at as string)}
