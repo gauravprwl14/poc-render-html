@@ -1,21 +1,30 @@
-import { Verification } from './types/KYCReportTypes';
-import { DisplayConfig, DisplayField } from './types/DisplayTypes';
-import { DataRenderer } from './DataRenderer/DataRenderer';
+import { Verification } from "./types/KYCReportTypes";
+import { DisplayConfig, DisplayField } from "./types/DisplayTypes";
+import { DataRenderer } from "./DataRenderer/DataRenderer";
 
 interface VerificationTableProps {
   verification: Verification;
   config: DisplayConfig;
 }
 
-export const VerificationTable = ({ verification, config }: VerificationTableProps) => {
+export const VerificationTable = ({
+  verification,
+  config,
+}: VerificationTableProps) => {
   const attributes = verification.data.attributes;
 
   // Group fields by their type
   const simpleFields: DisplayField[] = [];
   const complexFields: DisplayField[] = [];
 
-  config.displayData.forEach(field => {
-    if (field.type === 'string' || field.type === 'date' || field.type === 'status') {
+  config.displayData.forEach((field) => {
+    if (
+      field.type === "string" ||
+      field.type === "date" ||
+      field.type === "number" ||
+      field.type === "boolean" ||
+      field.type === "status"
+    ) {
       simpleFields.push(field);
     } else {
       complexFields.push(field);
@@ -57,4 +66,4 @@ export const VerificationTable = ({ verification, config }: VerificationTablePro
       ))}
     </div>
   );
-}; 
+};
