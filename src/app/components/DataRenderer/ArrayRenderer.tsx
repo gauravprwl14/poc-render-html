@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { DisplayField } from "../types/DisplayTypes";
-import { DataRenderer } from "./DataRenderer";
 import { TableRenderer } from "./TableRenderer";
 import { SectionRenderer } from "./SectionRenderer";
 

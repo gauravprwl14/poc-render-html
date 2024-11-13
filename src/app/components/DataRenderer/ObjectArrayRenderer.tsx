@@ -1,5 +1,4 @@
 import { DisplayField } from "../types/DisplayTypes";
-import { DataRenderer } from "./DataRenderer";
 
 interface ObjectArrayRendererProps {
   field: DisplayField;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DisplayField } from "../types/DisplayTypes";
-import { DataRenderer } from "./DataRenderer";
+import { DataRenderer } from "./index";
 
 interface SectionRendererProps {
   field: DisplayField;

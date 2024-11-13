@@ -1,6 +1,6 @@
 import { Verification } from "./types/KYCReportTypes";
 import { DisplayConfig, DisplayField } from "./types/DisplayTypes";
-import { DataRenderer } from "./DataRenderer/DataRenderer";
+import { DataRenderer } from "./DataRenderer";
 
 interface VerificationTableProps {
   verification: Verification;

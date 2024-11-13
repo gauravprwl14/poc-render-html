@@ -1,5 +1,5 @@
-import { DisplayField } from '../types/DisplayTypes';
-import { DataRenderer } from './DataRenderer';
+import { DisplayField } from "../types/DisplayTypes";
+import { DataRenderer } from "./index";
 
 interface ComplexDataModalProps {
   isOpen: boolean;
@@ -8,15 +8,20 @@ interface ComplexDataModalProps {
   field: DisplayField;
 }
 
-export const ComplexDataModal = ({ isOpen, onClose, data, field }: ComplexDataModalProps) => {
+export const ComplexDataModal = ({
+  isOpen,
+  onClose,
+  data,
+  field,
+}: ComplexDataModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      <div 
+      <div
         className="bg-white rounded-lg w-full max-w-2xl h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
@@ -29,8 +34,18 @@ export const ComplexDataModal = ({ isOpen, onClose, data, field }: ComplexDataMo
             onClick={onClose}
             className="text-gray-400 hover:text-gray-500 focus:outline-none"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -54,4 +69,4 @@ export const ComplexDataModal = ({ isOpen, onClose, data, field }: ComplexDataMo
       </div>
     </div>
   );
-}; 
+};

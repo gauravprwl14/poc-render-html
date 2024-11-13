@@ -1,5 +1,5 @@
 import { DisplayField } from "../types/DisplayTypes";
-import { DataRenderer } from "./DataRenderer";
+import { DataRenderer } from "./index";
 
 interface NestedDataViewProps {
   field: DisplayField;
