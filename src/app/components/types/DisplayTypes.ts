@@ -1,4 +1,13 @@
-export type DisplayFieldType = 'string' | 'date' | 'array' | 'object' | 'status' | 'table' | 'object-array';
+export type DisplayFieldType =
+  | "string"
+  | "number"
+  | "boolean"
+  | "date"
+  | "array"
+  | "object"
+  | "status"
+  | "table"
+  | "object-array";
 
 export interface DisplayField {
   key: string;
@@ -17,4 +26,4 @@ export interface DisplayConfig {
   displayName: string;
   displayData: DisplayField[];
   displayDate?: boolean;
-} 
+}
