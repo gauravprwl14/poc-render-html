@@ -232,6 +232,18 @@ export const displayConfig = {
             component: "Text",
           },
           {
+            key: "match-types",
+            displayName: "Match Types",
+            type: "array",
+            component: "List",
+          },
+          {
+            key: "pep-type",
+            displayName: "PEP Type",
+            type: "string",
+            component: "Text",
+          },
+          {
             key: "aliases",
             displayName: "Aliases",
             type: "array",
@@ -404,18 +416,6 @@ export const displayConfig = {
                 component: "Text",
               },
             ],
-          },
-          {
-            key: "match-types",
-            displayName: "Match Types",
-            type: "array",
-            component: "List",
-          },
-          {
-            key: "pep-type",
-            displayName: "PEP Type",
-            type: "string",
-            component: "Text",
           },
         ],
       },
