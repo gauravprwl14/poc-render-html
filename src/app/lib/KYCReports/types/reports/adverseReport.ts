@@ -72,6 +72,172 @@ export type AdverseMediaReport = {
   };
 };
 
+// export const displayConfig = {
+//   adverseMediaReport: {
+//     displayName: "Adverse Media Report",
+//     displayData: [
+//       {
+//         key: "status",
+//         displayName: "Status",
+//         type: "status",
+//         component: "Text",
+//       },
+//       {
+//         key: "has-match",
+//         displayName: "Has Match",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "is-continuous",
+//         displayName: "Continuous",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "is-recurring",
+//         displayName: "Recurring",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "tags",
+//         displayName: "Recurring",
+//         type: "array",
+//         component: "List",
+//       },
+//       {
+//         key: "created-at",
+//         displayName: "Created At",
+//         type: "date",
+//         component: "Text",
+//       },
+//       {
+//         key: "completed-at",
+//         displayName: "Completed At",
+//         type: "date",
+//         component: "Text",
+//       },
+//       {
+//         key: "report-template-version-name",
+//         displayName: "Template Version Name",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "name-first",
+//         displayName: "First Name",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "name-middle",
+//         displayName: "Middle Name",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "name-last",
+//         displayName: "Last Name",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "term",
+//         displayName: "Search Term",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "birthdate",
+//         displayName: "Birthdate",
+//         type: "date",
+//         component: "Text",
+//       },
+//       {
+//         key: "birthdate-year",
+//         displayName: "Birth Year",
+//         type: "number",
+//         component: "Text",
+//       },
+//       {
+//         key: "country-code",
+//         displayName: "Country Code",
+//         type: "string",
+//         component: "Text",
+//       },
+//       {
+//         key: "related-sources",
+//         displayName: "Related Sources",
+//         type: "array",
+//         component: "Table",
+//         properties: [
+//           {
+//             key: "entity-id",
+//             displayName: "Entity Id",
+//             type: "string",
+//             component: "Text",
+//           },
+//           {
+//             key: "name",
+//             displayName: "Source Name",
+//             type: "string",
+//             component: "Text",
+//           },
+//           {
+//             key: "sources",
+//             displayName: "Sources",
+//             type: "array",
+//             component: "Table",
+//             properties: [
+//               {
+//                 key: "country-code",
+//                 displayName: "Country Code",
+//                 type: "array",
+//                 component: "List",
+//               },
+//               {
+//                 key: "name",
+//                 displayName: "Source Name",
+//                 type: "string",
+//                 component: "Text",
+//               },
+//               {
+//                 key: "types",
+//                 displayName: "Types",
+//                 type: "array",
+//                 component: "List",
+//               },
+//             ],
+//           },
+
+//         ],
+//       },
+//       // {
+//       //   key: "ignore-list-media",
+//       //   displayName: "Ignored Media",
+//       //   type: "object",
+//       //   component: "Text",
+//       // },
+//       {
+//         key: "ignore-list-entity",
+//         displayName: "Ignored Entities",
+//         type: "array",
+//         component: "Table",
+//         properties: [
+//           {
+//             key: "entity-name",
+//             displayName: "Entity Name",
+//             type: "string",
+//             component: "Text",
+//           },
+//         ],
+//       },
+//     ],
+//     displayDate: true,
+//   },
+// };
+
 export const displayConfig = {
   adverseMediaReport: {
     displayName: "Adverse Media Report",
@@ -79,32 +245,8 @@ export const displayConfig = {
       {
         key: "status",
         displayName: "Status",
-        type: "status",
-        component: "Text",
-      },
-      {
-        key: "has-match",
-        displayName: "Has Match",
         type: "string",
         component: "Text",
-      },
-      {
-        key: "is-continuous",
-        displayName: "Continuous",
-        type: "string",
-        component: "Text",
-      },
-      {
-        key: "is-recurring",
-        displayName: "Recurring",
-        type: "string",
-        component: "Text",
-      },
-      {
-        key: "tags",
-        displayName: "Recurring",
-        type: "array",
-        component: "List",
       },
       {
         key: "created-at",
@@ -122,6 +264,24 @@ export const displayConfig = {
         key: "report-template-version-name",
         displayName: "Template Version Name",
         type: "string",
+        component: "Text",
+      },
+      {
+        key: "has-match",
+        displayName: "Has Match",
+        type: "boolean",
+        component: "Text",
+      },
+      {
+        key: "is-continuous",
+        displayName: "Is Continuous",
+        type: "boolean",
+        component: "Text",
+      },
+      {
+        key: "is-recurring",
+        displayName: "Is Recurring",
+        type: "boolean",
         component: "Text",
       },
       {
@@ -149,15 +309,15 @@ export const displayConfig = {
         component: "Text",
       },
       {
-        key: "birthdate",
-        displayName: "Birthdate",
-        type: "date",
-        component: "Text",
-      },
-      {
         key: "birthdate-year",
         displayName: "Birth Year",
         type: "number",
+        component: "Text",
+      },
+      {
+        key: "birthdate",
+        displayName: "Birthdate",
+        type: "date",
         component: "Text",
       },
       {
@@ -173,38 +333,100 @@ export const displayConfig = {
         component: "Table",
         properties: [
           {
-            key: "source-name",
+            key: "name",
             displayName: "Source Name",
             type: "string",
             component: "Text",
           },
           {
-            key: "source-url",
-            displayName: "Source URL",
-            type: "string",
-            component: "Link",
+            key: "akas",
+            displayName: "Aliases",
+            type: "array",
+            component: "List",
           },
-        ],
-      },
-      // {
-      //   key: "ignore-list-media",
-      //   displayName: "Ignored Media",
-      //   type: "object",
-      //   component: "Text",
-      // },
-      {
-        key: "ignore-list-entity",
-        displayName: "Ignored Entities",
-        type: "array",
-        component: "Table",
-        properties: [
           {
-            key: "entity-name",
-            displayName: "Entity Name",
+            key: "match-types",
+            displayName: "Match Types",
+            type: "array",
+            component: "List",
+          },
+          {
+            key: "media",
+            displayName: "Media",
+            type: "array",
+            component: "Table",
+            properties: [
+              {
+                key: "date",
+                displayName: "Date",
+                type: "date",
+                component: "Text",
+              },
+              {
+                key: "snippet",
+                displayName: "Snippet",
+                type: "string",
+                component: "Text",
+              },
+              {
+                key: "url",
+                displayName: "Media URL",
+                type: "string",
+                component: "Link",
+              },
+              {
+                key: "title",
+                displayName: "Title",
+                type: "string",
+                component: "Text",
+              },
+            ],
+          },
+          {
+            key: "sources",
+            displayName: "Sources",
+            type: "array",
+            component: "Table",
+            properties: [
+              {
+                key: "name",
+                displayName: "Source Name",
+                type: "string",
+                component: "Text",
+              },
+              {
+                key: "country-codes",
+                displayName: "Country Codes",
+                type: "array",
+                component: "List",
+              },
+              {
+                key: "types",
+                displayName: "Types",
+                type: "array",
+                component: "List",
+              },
+            ],
+          },
+          {
+            key: "entity-id",
+            displayName: "Entity ID",
             type: "string",
             component: "Text",
           },
         ],
+      },
+      {
+        key: "ignore-list-media",
+        displayName: "Ignored Media",
+        type: "object",
+        component: "Text",
+      },
+      {
+        key: "ignore-list-entity",
+        displayName: "Ignored Entities",
+        type: "object",
+        component: "Text",
       },
     ],
     displayDate: true,
