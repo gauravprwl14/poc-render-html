@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import HTMLRender from "./app/htmlRender";
 
 interface AppProps {
@@ -7,14 +7,16 @@ interface AppProps {
   data?: any;
 }
 
-const App: React.FC<AppProps> = (props) => {
-  console.log("props", { props });
+// const Parent = ({ children, data }: any) => {
+//   return <div>{children}</div>;
+// };
 
+const App: React.FC<AppProps> = (props) => {
   return (
     <div>
       <h1>{props.title}</h1>
       <p className="text-red-400">{props.content}</p>
-      <HTMLRender data={props.data} />
+      {props.data && <HTMLRender data={props.data} />}
     </div>
   );
 };

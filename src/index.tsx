@@ -1,28 +1,63 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-// @ts-ignore
-let initialData;
-if (typeof window !== "undefined") {
-  // @ts-ignore
-  initialData = window.__INITIAL_PROPS__ || {};
+declare global {
+  interface Window {
+    __INITIAL_PROPS__?: any;
+  }
 }
 
-console.log("initialData", { initialData });
+// Initial data from server to the initial Page load,
+let initialData;
+console.log("process.env.REACT_APP_ENV", {
+  env: process.env.REACT_APP_ENV,
+});
 
 const mountElement = document.getElementById("root");
-const reactMountFn =
-  mountElement?.childElementCount === 0 ? ReactDOM.render : ReactDOM.hydrate;
+const reactMountFn = ReactDOM.hydrate;
 
-reactMountFn(
-  <React.StrictMode>
-    <App data={initialData} />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+const renderApp = (data: any) => {
+  reactMountFn(
+    <React.StrictMode>{data && <App data={data} />}</React.StrictMode>,
+    mountElement
+  );
+};
+
+if (process.env.REACT_APP_ENV === "development") {
+  import("./app/lib/KYCReports/sampleInput/input_2").then((module) => {
+    initialData = module.sampleKYCResponse;
+    // Initialize your data here
+    console.log(
+      "Development environment: sampleKYCResponse initialized",
+      initialData
+    );
+    renderApp(initialData);
+  });
+} else {
+  if (
+    process.env.NODE_ENV === "production" &&
+    typeof window !== "undefined" &&
+    window.__INITIAL_PROPS__
+  ) {
+    try {
+      initialData = JSON.parse(window.atob(window.__INITIAL_PROPS__));
+      window.__INITIAL_PROPS__ = undefined;
+
+      // Remove the script tag containing `window.__INITIAL_PROPS__` after hydration
+      delete window.__INITIAL_PROPS__; // Clear the data from `window` object
+      const initialPropsScript = document.getElementById("hydration-script");
+      if (initialPropsScript) {
+        initialPropsScript.remove(); // Remove the script tag from the DOM
+      }
+    } catch (error) {
+      console.error("Error parsing initial props:", error);
+    }
+  }
+  renderApp(initialData);
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,4 +1,4 @@
-import { CurrentkYCResponseStructure } from "./sampleInput/input_2";
+// import { sampleKYCResponse } from "../../../../sampleInput/input_2";
 // name the flow to checks
 
 const ReportKeyConfig = [
@@ -336,7 +336,7 @@ export function transformReportData(reportData: any) {
 }
 
 // console.log(
-//   JSON.stringify(transformReportData(CurrentkYCResponseStructure), null, 2)
+//   JSON.stringify(transformReportData(sampleKYCResponse), null, 2)
 // );
 
 export function generateKYCReport(data: any) {
@@ -345,7 +345,7 @@ export function generateKYCReport(data: any) {
     // return transformReportData(data);
     return transformReportData(data);
   }
-  return transformReportData(CurrentkYCResponseStructure);
+  // return transformReportData(sampleKYCResponse);
 }
 
-// console.log(convertKeysToKebabCase(CurrentkYCResponseStructure));
+// console.log(convertKeysToKebabCase(sampleKYCResponse));

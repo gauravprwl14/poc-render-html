@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import "@babel/register";
-import React from "react";
 import ReactDOMServer from "react-dom/server";
 import PageRender from "./src/App";
 import fs from "fs";
 import path from "path";
 import express from "express";
-import { CurrentkYCResponseStructure } from "./src/app/lib/KYCReports/sampleInput/input_2";
+import { sampleKYCResponse } from "./src/app/lib/KYCReports/sampleInput/input_2";
 const app = express();
 const port = 3010;
 
@@ -30,8 +29,9 @@ const findHashedFile = (
 
 app.post("/data", (req: Request, res: Response) => {
   let data = req.body;
-  data = CurrentkYCResponseStructure;
+  data = sampleKYCResponse;
   const appHtml = ReactDOMServer.renderToStaticMarkup(PageRender({ data }));
+  const encodedData = Buffer.from(JSON.stringify(data)).toString("base64");
 
   // Read the HTML template file
   const htmlTemplate = fs.readFileSync(
@@ -70,8 +70,8 @@ app.post("/data", (req: Request, res: Response) => {
 
   // Add JS files before closing body tag
   if (mainJsFile) {
-    const hydrateData = `            <script>
-              window.__INITIAL_PROPS__ = ${JSON.stringify(data)};
+    const hydrateData = `            <script id="hydration-script">
+              window.__INITIAL_PROPS__ = "${encodedData}";
             </script>`;
 
     const jsScripts = `<script>${jsContent}</script>`;

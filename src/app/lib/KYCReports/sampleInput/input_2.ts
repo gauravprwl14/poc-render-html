@@ -115,7 +115,7 @@ export const formatResponse = (response: any) => {
   }
 };
 
-export const CurrentkYCResponseStructure = {
+export const sampleKYCResponse = {
   data: [
     {
       naoUserId: "5tH5YUUSNqpPqrAzXci1",
