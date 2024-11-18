@@ -16,6 +16,7 @@
     "@types/react": "^17.0.83",
     "@types/react-dom": "^17.0.25",
     "babel-plugin-transform-assets-import-to-string": "^1.2.0",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "lodash": "^4.17.21",
     "react": "^17.0.2",

@@ -5,7 +5,11 @@ import PageRender from "./src/App";
 import fs from "fs";
 import path from "path";
 import express from "express";
+import * as dotenv from "dotenv";
 import { sampleKYCResponse } from "./src/app/lib/KYCReports/sampleInput/input_2";
+// Load the environment variables based on the `NODE_ENV`
+dotenv.config({ path: `.env.${process.env.NODE_ENV || "development"}` });
+
 const app = express();
 const port = 3010;
 
@@ -34,64 +38,95 @@ app.post("/data", (req: Request, res: Response) => {
   const encodedData = Buffer.from(JSON.stringify(data)).toString("base64");
 
   // Read the HTML template file
-  const htmlTemplate = fs.readFileSync(
-    path.resolve(__dirname, "public", "index.html"),
+  let htmlTemplate = fs.readFileSync(
+    path.resolve(
+      __dirname,
+      process.env.BUILD_PATH ? process.env.BUILD_PATH : "public",
+      "index.html"
+    ),
     "utf-8"
   );
-
   // Find and read the hashed CSS file
   const cssDirectory = path.resolve(__dirname, "build", "static", "css");
   const cssFileName = findHashedFile(cssDirectory, "main", ".css");
+  // const cssContent = cssFileName
+  //   ? fs.readFileSync(path.resolve(cssDirectory, cssFileName), "utf-8")
+  //   : "";
 
-  let cssContent = "";
-  if (cssFileName) {
-    const cssPath = path.resolve(cssDirectory, cssFileName);
-    cssContent = fs.readFileSync(cssPath, "utf-8");
-  }
-
-  // Find the JS files
+  // Find and read the hashed JS file
   const jsDirectory = path.resolve(__dirname, "build", "static", "js");
   const mainJsFile = findHashedFile(jsDirectory, "main", ".js");
-  // const runtimeJsFile = findHashedFile(jsDirectory, "runtime", ".js");
-  // <script src="/static/js/${runtimeJsFile}"></script>
+  // const jsContent = mainJsFile
+  //   ? fs.readFileSync(path.resolve(jsDirectory, mainJsFile), "utf-8")
+  //   : "";
 
-  // read the hashed JS file
-  let jsContent = "";
-  if (mainJsFile) {
-    const jsPath = path.resolve(jsDirectory, mainJsFile);
-    jsContent = fs.readFileSync(jsPath, "utf-8");
-  }
-
-  // Inject CSS, JS, and rendered app HTML into the template
+  // Inject CSS, and rendered app HTML into the template
   let renderedHtml = htmlTemplate
-    // .replace("</head>", `<style>${cssContent}</style></head>`)
-    .replace("</head>", `<style>${cssContent}</style></head>`)
+    .replace(
+      "</head>",
+      `<link rel="stylesheet" type="text/css" href="./static/css/${cssFileName}"></head>`
+    )
     .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 
-  // Add JS files before closing body tag
+  // Add JS files and hydration script before closing body tag
   if (mainJsFile) {
-    const hydrateData = `            <script id="hydration-script">
+    const hydrateData = `<script id="hydration-script">
               window.__INITIAL_PROPS__ = "${encodedData}";
             </script>`;
-
-    const jsScripts = `<script>${jsContent}</script>`;
-
+    const jsScripts = `<script src="./static/js/${mainJsFile}"></script>`;
     renderedHtml = renderedHtml.replace(
       "</body>",
       `${hydrateData} \n ${jsScripts}</body>`
     );
-
-    // OUTPUT Directory
-    const outputDirectory = path.resolve(__dirname, "output");
-    if (!fs.existsSync(outputDirectory)) {
-      fs.mkdirSync(outputDirectory);
-    }
-    // Write the rendered HTML to a render.html if not exists then create one
-    fs.writeFileSync(
-      path.resolve(outputDirectory, "render.html"),
-      renderedHtml
-    );
   }
+
+  // OUTPUT Directory
+  const outputDirectory = path.resolve(__dirname, "output");
+  if (!fs.existsSync(outputDirectory)) {
+    fs.mkdirSync(outputDirectory);
+  }
+
+  // Write the rendered HTML to a render.html if not exists then create one
+  fs.writeFileSync(path.resolve(outputDirectory, "render.html"), renderedHtml);
+
+  console.log("process.env.BUILD_PATH", { env: process.env });
+
+  if (process.env.BUILD_PATH) {
+    console.log("Copying static folder to output directory");
+    // write the code to copy the static folder present inside the build path to the output directory
+    const staticSrcPath = path.resolve(process.env.BUILD_PATH, "static");
+    const staticDestPath = path.resolve(outputDirectory, "static");
+
+    if (fs.existsSync(staticSrcPath)) {
+      fs.mkdirSync(staticDestPath, { recursive: true });
+
+      const copyRecursiveSync = (src: string, dest: string) => {
+        const entries = fs.readdirSync(src, { withFileTypes: true });
+
+        entries.forEach((entry) => {
+          const srcPath = path.join(src, entry.name);
+          const destPath = path.join(dest, entry.name);
+
+          if (entry.isDirectory()) {
+            fs.mkdirSync(destPath, { recursive: true });
+            copyRecursiveSync(srcPath, destPath);
+          } else {
+            fs.copyFileSync(srcPath, destPath);
+          }
+        });
+      };
+
+      copyRecursiveSync(staticSrcPath, staticDestPath);
+    }
+  }
+
+  // // OUTPUT Directory
+  // const outputDirectory = path.resolve(__dirname, "output");
+  // if (!fs.existsSync(outputDirectory)) {
+  //   fs.mkdirSync(outputDirectory);
+  // }
+  // // Write the rendered HTML to a render.html if not exists then create one
+  // fs.writeFileSync(path.resolve(outputDirectory, "render.html"), renderedHtml);
 
   // Send the rendered HTML to the client
   res.send(renderedHtml);

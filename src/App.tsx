@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React, { useState, useEffect } from "react";
 import HTMLRender from "./app/htmlRender";
 
 interface AppProps {
@@ -7,38 +7,76 @@ interface AppProps {
   data?: any;
 }
 
-// const Parent = ({ children, data }: any) => {
-//   return <div>{children}</div>;
-// };
+declare global {
+  interface Window {
+    __INITIAL_PROPS__?: any;
+  }
+}
 
 const App: React.FC<AppProps> = (props) => {
-  let data = props.data;
-  if (
-    process.env.NODE_ENV === "production" &&
-    typeof window !== "undefined" &&
-    window.__INITIAL_PROPS__
-  ) {
-    try {
-      let initialData = JSON.parse(window.atob(window.__INITIAL_PROPS__));
-      window.__INITIAL_PROPS__ = undefined;
+  const [data, setData] = useState(props.data); // State for data
+  const [loading, setLoading] = useState(true); // State for loader
+  const [error, setError] = useState<string | null>(null); // State for error
 
-      // Remove the script tag containing `window.__INITIAL_PROPS__` after hydration
-      delete window.__INITIAL_PROPS__; // Clear the data from `window` object
-      const initialPropsScript = document.getElementById("hydration-script");
-      if (initialPropsScript) {
-        initialPropsScript.remove(); // Remove the script tag from the DOM
-      }
-      data = initialData;
-    } catch (error) {
-      console.error("Error parsing initial props:", error);
+  useEffect(() => {
+    if (props.data) {
+      setData(props.data);
+      setLoading(false);
+      return;
     }
-  }
+
+    if (
+      process.env.NODE_ENV === "production" &&
+      typeof window !== "undefined" &&
+      window.__INITIAL_PROPS__
+    ) {
+      try {
+        const initialData = JSON.parse(window.atob(window.__INITIAL_PROPS__));
+        window.__INITIAL_PROPS__ = undefined;
+
+        // Remove the script tag containing `window.__INITIAL_PROPS__` after hydration
+        const initialPropsScript = document.getElementById("hydration-script");
+        if (initialPropsScript) {
+          initialPropsScript.remove(); // Remove the script tag from the DOM
+        }
+
+        setData(initialData); // Update the state
+        setLoading(false); // Stop the loader
+      } catch (error) {
+        console.error("Error parsing initial props:", error);
+        setError("Failed to load initial props."); // Set error state
+        setLoading(false); // Stop the loader
+      }
+    } else {
+      import("./app/lib/KYCReports/sampleInput/input_2")
+        .then((module) => {
+          const initialData = module.sampleKYCResponse;
+          console.log(
+            "Development environment: sampleKYCResponse initialized",
+            initialData
+          );
+          // TODO: fix the typescript error
+          // @ts-ignore
+          setData(initialData); // Update the state
+          setLoading(false); // Stop the loader
+        })
+        .catch((error) => {
+          console.error("Error loading script:", error);
+          setError("Failed to load data."); // Set error state
+          setLoading(false); // Stop the loader
+        });
+    }
+  }, [props.data]); // Empty dependency array to ensure this runs once after mount
 
   return (
     <div>
       <h1>{props.title}</h1>
       <p className="text-red-400">{props.content}</p>
-      {data && <HTMLRender data={data} />}
+      {loading && <div className="loader">Loading...</div>} {/* Show loader */}
+      {!loading && error && <div className="error-message">{error}</div>}{" "}
+      {/* Show error if loading is complete but there's an error */}
+      {!loading && !error && data && <HTMLRender data={data} />}{" "}
+      {/* Show data */}
     </div>
   );
 };
