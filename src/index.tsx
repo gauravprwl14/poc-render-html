@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 declare global {
   interface Window {
     __INITIAL_PROPS__?: any;
+    renderFromSaleForce?: (element: any) => void;
   }
 }
 
@@ -19,12 +20,11 @@ console.log("process.env.REACT_APP_ENV", {
 const mountElement = document.getElementById("root");
 const reactMountFn = ReactDOM.hydrate;
 
-const renderApp = (data: any) => {
-  reactMountFn(
-    <React.StrictMode>{data && <App data={data} />}</React.StrictMode>,
-    mountElement
-  );
+const renderApp = (mountElement: any) => {
+  reactMountFn(<React.StrictMode>{<App />}</React.StrictMode>, mountElement);
 };
+
+window.renderFromSaleForce = (element: any) => renderApp(element);
 
 if (process.env.REACT_APP_ENV === "development") {
   import("./app/lib/KYCReports/sampleInput/input_2").then((module) => {
@@ -34,7 +34,7 @@ if (process.env.REACT_APP_ENV === "development") {
       "Development environment: sampleKYCResponse initialized",
       initialData
     );
-    renderApp(initialData);
+    renderApp(mountElement);
   });
 } else {
   if (
@@ -56,7 +56,7 @@ if (process.env.REACT_APP_ENV === "development") {
       console.error("Error parsing initial props:", error);
     }
   }
-  renderApp(initialData);
+  // renderApp(initialData);
 }
 
 // If you want to start measuring performance in your app, pass a function
