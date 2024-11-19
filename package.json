@@ -30,7 +30,9 @@
     "build": "TSC_COMPILE_ON_ERROR=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start:server": "npx nodemon server.ts"
+    "start:server": "npx nodemon server.ts",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +55,7 @@
   "devDependencies": {
     "@types/lodash": "^4.17.13",
     "autoprefixer": "^10.4.4",
+    "gh-pages": "^6.2.0",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.23",
     "ts-node": "^10.9.2"
