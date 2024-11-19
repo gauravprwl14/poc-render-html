@@ -36,19 +36,23 @@ app.post("/data", (req: Request, res: Response) => {
   data = sampleKYCResponse;
   const appHtml = ReactDOMServer.renderToStaticMarkup(PageRender({ data }));
   const encodedData = Buffer.from(JSON.stringify(data)).toString("base64");
+  const buildPath = process.env.BUILD_PATH || "build";
 
   // Read the HTML template file
   let htmlTemplate = fs.readFileSync(
-    path.resolve(
-      __dirname,
-      process.env.BUILD_PATH ? process.env.BUILD_PATH : "public",
-      "index.html"
-    ),
+    path.resolve(__dirname, buildPath, "index.html"),
     "utf-8"
   );
+
+  // const StaticFileBaseURL =
+  //   "https://raw.githubusercontent.com/gauravprwl14/poc-render-html/refs/heads/integrate-with-saleforce-lwc/output";
+  const StaticFileBaseURL = "https://gauravprwl14.github.io/poc-render-html";
+
   // Find and read the hashed CSS file
   const cssDirectory = path.resolve(__dirname, "build", "static", "css");
   const cssFileName = findHashedFile(cssDirectory, "main", ".css");
+
+  const cssStyle = `<link rel="stylesheet" type="text/css" href="${StaticFileBaseURL}/static/css/${cssFileName}">`;
   // const cssContent = cssFileName
   //   ? fs.readFileSync(path.resolve(cssDirectory, cssFileName), "utf-8")
   //   : "";
@@ -56,16 +60,14 @@ app.post("/data", (req: Request, res: Response) => {
   // Find and read the hashed JS file
   const jsDirectory = path.resolve(__dirname, "build", "static", "js");
   const mainJsFile = findHashedFile(jsDirectory, "main", ".js");
+  console.log("mainJsFile", mainJsFile);
   // const jsContent = mainJsFile
   //   ? fs.readFileSync(path.resolve(jsDirectory, mainJsFile), "utf-8")
   //   : "";
 
   // Inject CSS, and rendered app HTML into the template
   let renderedHtml = htmlTemplate
-    .replace(
-      "</head>",
-      `<link rel="stylesheet" type="text/css" href="./static/css/${cssFileName}"></head>`
-    )
+    .replace("</head>", `${cssStyle}</head>`)
     .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 
   // Add JS files and hydration script before closing body tag
@@ -73,7 +75,8 @@ app.post("/data", (req: Request, res: Response) => {
     const hydrateData = `<script id="hydration-script">
               window.__INITIAL_PROPS__ = "${encodedData}";
             </script>`;
-    const jsScripts = `<script src="./static/js/${mainJsFile}"></script>`;
+    const jsScripts = `<script src="${StaticFileBaseURL}/static/js/${mainJsFile}"></script>`;
+    // const jsScripts = `<script src="${StaticFileBaseURL}/static/js/${mainJsFile}} "></script>`;
     renderedHtml = renderedHtml.replace(
       "</body>",
       `${hydrateData} \n ${jsScripts}</body>`
@@ -89,12 +92,10 @@ app.post("/data", (req: Request, res: Response) => {
   // Write the rendered HTML to a render.html if not exists then create one
   fs.writeFileSync(path.resolve(outputDirectory, "render.html"), renderedHtml);
 
-  console.log("process.env.BUILD_PATH", { env: process.env });
-
-  if (process.env.BUILD_PATH) {
+  if (buildPath) {
     console.log("Copying static folder to output directory");
     // write the code to copy the static folder present inside the build path to the output directory
-    const staticSrcPath = path.resolve(process.env.BUILD_PATH, "static");
+    const staticSrcPath = path.resolve(buildPath, "static");
     const staticDestPath = path.resolve(outputDirectory, "static");
 
     if (fs.existsSync(staticSrcPath)) {
